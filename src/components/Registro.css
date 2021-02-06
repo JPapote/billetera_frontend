@@ -1,0 +1,31 @@
+
+.Container{
+    text-align: justify;
+    justify-content: space-around;
+    display: grid;
+    /* grid-template-columns: repeat(3, 1fr); */
+    
+}
+
+form{
+    margin: 30px;
+    grid-column-start: 2;
+    display: grid;
+    background-color: gainsboro;
+    grid-template-columns: 1fr;
+    width: 300px;
+    padding: 50px;
+}
+label{
+    padding: 10px;
+}
+
+input{
+    height: 40px;
+}
+button{
+    margin-top: 10px;
+    width: max-content;
+    height: 40px;
+
+}
