@@ -1,24 +1,19 @@
 import { useState } from 'react';
-import { Url } from './url'
+import { Url } from '../utils/url'
 
-export default function ConsultarSaldo({ documento, celular }) {
+export default function ConsultarSaldo({token}) {
 
     const [mensaje, setMensaje] = useState('');
-
     const getSaldo = () => {
 
-        const obj = {
-            documento: documento,
-            celular: celular
-        }
 
         fetch(Url + 'consultarSaldo', {
             method: "POST",
             headers: {
                 Accept: 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(obj)
+                'Content-Type': 'application/json',
+                authorization: 'bearer ' + token
+            }
 
         }).then(async res => await res.json()).then(r => {
             setMensaje(r.text)
@@ -30,13 +25,13 @@ export default function ConsultarSaldo({ documento, celular }) {
     }
 
     return (
-        <div>
+        <div style={{margin:'10px'}}>
             <button onClick={getSaldo}>
                 Consultar saldo
            </button>
-
-            <p>${mensaje}</p>
-
+{ mensaje ?
+            <p>${mensaje}</p> : ''
+}
         </div>
     )
 } 

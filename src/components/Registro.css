@@ -1,15 +1,17 @@
 
 .Container{
-    text-align: justify;
-    justify-content: space-around;
+    
+    
     display: grid;
-    /* grid-template-columns: repeat(3, 1fr); */
+    margin: 10px;
+    justify-content: center;
+  
     
 }
 
+
 form{
     margin: 30px;
-    grid-column-start: 2;
     display: grid;
     background-color: gainsboro;
     grid-template-columns: 1fr;
@@ -29,3 +31,4 @@ button{
     height: 40px;
 
 }
+

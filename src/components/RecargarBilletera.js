@@ -1,32 +1,40 @@
 import { useState } from 'react';
-import  {Url} from './url'
-export default function RecargarBilletera ({documento, celular} ) {
+import  {Url} from '../utils/url'
+import  {Message} from '../container/message'
 
-    const [mensaje, setMensaje] = useState('');
+
+export default function RecargarBilletera ({token} ) {
+
+    const [mensaje, setMensaje] = useState(null)
    
     const sendRecarga = (e) => {
 
 e.preventDefault()
-
-        const obj = {
-            documento,
-            celular,
-            valor : e.target.recarga.value
-        }
+            
+           const valor = e.target.recarga.value
+        e.target.recarga.value = ""
+        
         fetch(Url+'update', {
             method:"PUT",
             headers: {
                 Accept: 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                authorization: 'bearer ' + token
               },
-            body: JSON.stringify(obj)
+            body: JSON.stringify({valor})
             
         }).then(res => res.json()).then(r => {
-            setMensaje(r.text)
+           if(r.text === "success"){
+             setMensaje(<Message text={'Recarga exitosa'} theme="success"/>)
+           }else{
+          setMensaje(<Message text={'Ocurrió un error'+ r} theme="error"/>)
+
+           }
 
         }).catch(e => {
             
-            console.log(e)
+            setMensaje(<Message text={'Ocurrió un error ' + e} theme="error"/>)
+
         })
           
     }
@@ -36,16 +44,10 @@ e.preventDefault()
         <div>
             <form onSubmit={sendRecarga}>
                 <h1>Recargar Billetera</h1>
-                <label>Monto de la recarga</label>
+               
                 <input type="number" name="recarga" required />
             <button type="submit">RecargarBilletera</button>
-            {mensaje !== '' ?
-                <div>
-                    <p>
-                        {mensaje}
-                    </p>
-                </div>
-                : ''}
+            {mensaje  ?  mensaje : ''}
             </form>
                
         </div>

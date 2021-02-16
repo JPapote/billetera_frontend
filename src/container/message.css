@@ -1,0 +1,15 @@
+.Success{
+    background-color: rgba(23, 170, 55, 0.623);
+    color: white;
+    text-align: center;
+    padding: 5px;
+    width: max-content;
+}
+
+.Error{
+    background-color: rgba(180, 21, 21, 0.623);
+    color: white;
+    text-align: center;
+    padding: 5px;
+    width: max-content;
+}

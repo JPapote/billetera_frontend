@@ -1,20 +1,21 @@
 import { useState } from 'react';
 import ConsultarSaldo from './ConsultarSaldo';
 import RecargarBilletera from './RecargarBilletera'
-import Pagar from './Pagar'
-import {Url} from './url'
+import Buy from './Buy'
+import {Url} from '../utils/url'
+import  {Message} from '../container/message'
 
 import './Registro.css'
 
 export default function Registro() {
 
-    const [mensaje, setMensaje] = useState('');
+    const [mensaje, setMensaje] = useState(null);
     const [valid, setValid] = useState(false);
-    const [documento, setDocumento] = useState('')
-    const [celular, setCelular] = useState('')
-    const [email, setEmail] = useState('')
+    const [token, setToken] = useState('')
+
 
     const sendData = async (e) => {
+    
         e.preventDefault()        
         
         if (e.target.celular.value.length <= 5 || e.target.celular.value.length > 15 ) {
@@ -44,17 +45,15 @@ export default function Registro() {
                   },
                 body: JSON.stringify(obj)
                 
-            }).then(async res => {
-                console.log(await res.json())
-                setCelular(e.target.celular.value)
-            setDocumento(e.target.documento.value)
-            setEmail(e.target.email.value)
-                    setMensaje('')
-                    setValid(true)
+            }).then(async res => await res.json()).then(r => {
                 
-            }).catch(e => {
+                 setToken(r.token)
+                        setValid(true)
+            })
+            .catch(e => {
                 setValid(false)
-                console.log(e)
+                setMensaje(<Message text={'Ocurrió un error ' + e} theme="error"/>)
+
             })
             
         }
@@ -67,6 +66,7 @@ export default function Registro() {
         <div className=  "Container" >
         
             <form onSubmit={sendData}>
+            <h1>Resgistro</h1>
                 <label>Nombre</label>
                 <input type="text" placeholder="Ingresa tu nombre" name="nombre" minLength="2" maxLength="20" required />
 
@@ -80,9 +80,11 @@ export default function Registro() {
                 <input type="number" placeholder="Ingresa tu numero de documento"  name="documento" required />
 
                 <button type="submit" className="Button">Enviar</button>
-            {!valid ? <p>
-                        {mensaje}
-                    </p> : ''}
+            {mensaje ? 
+                        mensaje
+
+                     :  ''
+            }
             </form>
             
                 
@@ -95,9 +97,9 @@ export default function Registro() {
                  
 
                  <div className="Container">
-                   <RecargarBilletera celular={celular} documento={documento}/>
-                   <ConsultarSaldo celular={celular} documento={documento}/>
-                   <Pagar email={email} celular={celular} documento={documento}/>
+                   <RecargarBilletera token={token}/>
+                   <ConsultarSaldo token={token}/>
+                   <Buy token={token}/>
                 </div>
                    
         
