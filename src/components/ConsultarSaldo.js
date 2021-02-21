@@ -1,9 +1,12 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { Url } from '../utils/url'
+import { UseContext } from '../context/UseContext';
 
-export default function ConsultarSaldo({token}) {
+export default function ConsultarSaldo() {
 
     const [mensaje, setMensaje] = useState('');
+    const { token } = useContext(UseContext)
+
     const getSaldo = () => {
 
 
@@ -19,19 +22,20 @@ export default function ConsultarSaldo({token}) {
             setMensaje(r.text)
 
         }).catch(e => {
+            console.log(token)
 
             console.log(e)
         })
     }
 
     return (
-        <div style={{margin:'10px'}}>
+        <div style={{ margin: '10px' }}>
             <button onClick={getSaldo}>
                 Consultar saldo
            </button>
-{ mensaje ?
-            <p>${mensaje}</p> : ''
-}
+            { mensaje ?
+                <p>${mensaje}</p> : ''
+            }
         </div>
     )
 } 

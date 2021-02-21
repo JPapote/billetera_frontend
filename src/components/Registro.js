@@ -1,18 +1,19 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
+
+
 import ConsultarSaldo from './ConsultarSaldo';
 import RecargarBilletera from './RecargarBilletera'
 import Buy from './Buy'
 import {Url} from '../utils/url'
 import  {Message} from '../container/message'
+import {UseContext} from '../context/UseContext'
 
 import './Registro.css'
 
 export default function Registro() {
 
     const [mensaje, setMensaje] = useState(null);
-    const [valid, setValid] = useState(false);
-    const [token, setToken] = useState('')
-
+    const{loginUser} = useContext(UseContext)
 
     const sendData = async (e) => {
     
@@ -20,12 +21,10 @@ export default function Registro() {
         
         if (e.target.celular.value.length <= 5 || e.target.celular.value.length > 15 ) {
             setMensaje('El numero de celular debe tener al mas de 6 cifras o menos de 15')
-        setValid(false)
-
+            
         }
         else if(e.target.documento.value.length <= 6 || e.target.documento.value.length > 9){
             setMensaje('El numero de documento debe tener entre 7 y 9caracteres ')
-        setValid(false)
 
         }
         else{
@@ -47,11 +46,11 @@ export default function Registro() {
                 
             }).then(async res => await res.json()).then(r => {
                 
-                 setToken(r.token)
-                        setValid(true)
+                 loginUser(r.token)
+                
             })
             .catch(e => {
-                setValid(false)
+                
                 setMensaje(<Message text={'Ocurrió un error ' + e} theme="error"/>)
 
             })
@@ -61,7 +60,7 @@ export default function Registro() {
     }
 
     return (
-        !valid  ?
+       
         
         <div className=  "Container" >
         
@@ -86,23 +85,9 @@ export default function Registro() {
                      :  ''
             }
             </form>
-            
                 
-            
-                
-                    
-            </div>
-                :
-                 
-                 
-
-                 <div className="Container">
-                   <RecargarBilletera token={token}/>
-                   <ConsultarSaldo token={token}/>
-                   <Buy token={token}/>
-                </div>
-                   
-        
+               
+        </div>
         
 
 

@@ -1,12 +1,13 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import  {Url} from '../utils/url'
 import  {Message} from '../container/message'
+import { UseContext } from '../context/UseContext';
 
 
-export default function RecargarBilletera ({token} ) {
+export default function RecargarBilletera ( ) {
 
     const [mensaje, setMensaje] = useState(null)
-   
+   const {token} = useContext(UseContext)
     const sendRecarga = (e) => {
 
 e.preventDefault()
